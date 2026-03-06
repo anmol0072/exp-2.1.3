@@ -8,9 +8,20 @@
 <body>
 
 <header>
+<h1>TechStore</h1>
 
-<h1>🛍 TechStore</h1>
-<button id="cartBtn">Cart 🛒</button>
+<input type="text" id="search" placeholder="Search products">
+
+<select id="filter">
+<option value="all">All</option>
+<option value="audio">Audio</option>
+<option value="computer">Computer</option>
+<option value="accessories">Accessories</option>
+</select>
+
+<button onclick="openCart()">
+Cart (<span id="cartCount">0</span>)
+</button>
 
 </header>
 
@@ -18,8 +29,11 @@
 
 <div id="products" class="grid"></div>
 
+<div id="cart" class="cart hidden">
 <h2>Your Cart</h2>
-<div id="cart"></div>
+<div id="cartItems"></div>
+<button onclick="closeCart()">Close</button>
+</div>
 
 <script src="script.js"></script>
 

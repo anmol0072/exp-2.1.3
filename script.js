@@ -1,69 +1,87 @@
-const productDiv=document.getElementById("products");
-const cartDiv=document.getElementById("cart");
+let products=[]
+let cart=[]
 
 async function loadProducts(){
 
-const res=await fetch("/api/products");
-const products=await res.json();
+const res = await fetch("/api/products")
 
-productDiv.innerHTML="";
+products = await res.json()
 
-products.forEach(p=>{
+displayProducts(products)
 
-const card=document.createElement("div");
+}
 
-card.className="card";
+function displayProducts(list){
 
-card.innerHTML=`
+const container=document.getElementById("products")
+
+container.innerHTML=""
+
+list.forEach(p=>{
+
+const div=document.createElement("div")
+
+div.className="card"
+
+div.innerHTML=`
 <img src="${p.image}">
 <h3>${p.name}</h3>
 <p>₹${p.price}</p>
 <button onclick="addToCart(${p.id})">Add to Cart</button>
-`;
+`
 
-productDiv.appendChild(card);
+container.appendChild(div)
 
-});
-
-}
-
-async function addToCart(id){
-
-await fetch("/api/cart",{
-
-method:"POST",
-
-headers:{
-"Content-Type":"application/json"
-},
-
-body:JSON.stringify({productId:id})
-
-});
-
-loadCart();
+})
 
 }
 
-async function loadCart(){
+function addToCart(id){
 
-const res=await fetch("/api/cart");
+const item=products.find(p=>p.id===id)
 
-const cart=await res.json();
+cart.push(item)
 
-cartDiv.innerHTML="";
+updateCart()
+
+}
+
+function updateCart(){
+
+document.getElementById("cartCount").innerText=cart.length
+
+}
+
+function openCart(){
+
+document.getElementById("cart").classList.remove("hidden")
+
+renderCart()
+
+}
+
+function closeCart(){
+
+document.getElementById("cart").classList.add("hidden")
+
+}
+
+function renderCart(){
+
+const cartDiv=document.getElementById("cartItems")
+
+cartDiv.innerHTML=""
 
 cart.forEach(item=>{
 
-const p=document.createElement("p");
+const div=document.createElement("div")
 
-p.innerText=`${item.name} - ₹${item.price}`;
+div.innerHTML=`${item.name} - ₹${item.price}`
 
-cartDiv.appendChild(p);
+cartDiv.appendChild(div)
 
-});
+})
 
 }
 
-loadProducts();
-loadCart();
+loadProducts()
