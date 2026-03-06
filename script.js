@@ -4,6 +4,12 @@ let cart=[]
 async function loadProducts(){
 
 const res = await fetch("/api/products")
+.then(res => res.json())
+.then(data => {
+products = data
+displayProducts(products)
+})
+.catch(err => console.log(err))
 
 products = await res.json()
 
